@@ -12,10 +12,49 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String
-  password String
+model User {
+  id      String @id @default(uuid())
+  name    String
+  role    Role
+  country String
+  orders  Order[]
 }
 
+model Restaurant {
+  id    String @id @default(uuid())
+  name  String
+  menu  MenuItem[]
+}
+
+model MenuItem {
+  id           String @id @default(uuid())
+  name         String
+  price        Float
+  restaurantId String
+}
+
+model Order {
+  id       String @id @default(uuid())
+  userId   String
+  status   OrderStatus
+  items    OrderItem[]
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  orderId  String
+  itemId   String
+  quantity Int
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  MEMBER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
